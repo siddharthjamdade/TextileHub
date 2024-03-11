@@ -276,11 +276,11 @@
       document.getElementById('qualityValue').innerText = quality;
 
       // Calculate Warp Weight per Meter
-      const warpWeight = ((reedSpace * epi) / (1693.33 * warpCount)) * 1.055;
+      const warpWeight = ((reedSpace * epi) / (1693.33 * warpCount)) * 1.05;
       document.getElementById('warpWeight').innerText = warpWeight.toFixed(3);
 
       // Calculate Weft Weight per Meter
-      const weftWeight = ((reedSpace * ppi) / (1693.33 * weftCount)) * 1.055;
+      const weftWeight = ((reedSpace * ppi) / (1693.33 * weftCount)) * 1.05;
       document.getElementById('weftWeight').innerText = weftWeight.toFixed(3);
 
       // Calculate Warp Cost per Meter
