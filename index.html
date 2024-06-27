@@ -6,60 +6,66 @@
   <title>Textile Calculator</title>
   <style>
     body {
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
+      background-color: #e8f0fe;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 20px;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
-    h2, h3 {
-      color: #333;
+    h1 {
+      text-align: center;
+      background-color: #007BFF;
+      color: #fff;
+      padding: 15px 30px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .sections {
       display: flex;
-      flex: 1;
-      align-items: flex-start;
+      width: 100%;
+      max-width: 1200px;
+      gap: 20px;
     }
     .section1, .section2 {
-      width: 50%;
-      position: relative;
+      flex: 1;
       background-color: #fff;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      margin-right: 20px;
     }
     form {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
       max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
     }
     form label {
-      display: block;
-      margin-bottom: 8px;
-      color: #555;
+      color: #333;
+      font-weight: bold;
     }
-    form input {
+    form input, form select {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      box-sizing: border-box;
+      padding: 10px;
       border-radius: 5px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
     button {
-      background-color: #4caf50;
+      background-color: #007BFF;
       color: #fff;
       padding: 10px 15px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
     }
     table {
       border-collapse: collapse;
@@ -67,55 +73,56 @@
       margin-bottom: 20px;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     th, td {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 12px;
       text-align: left;
     }
     th {
-      background-color: #4caf50;
+      background-color: #007BFF;
       color: #fff;
     }
     td {
-      background-color: #fff;
+      background-color: #f8f9fa;
     }
-    h1 {
-      text-align: center;
-      background-color: #4caf50;
+    h2, h3 {
+      color: #333;
+    }
+    #qualityBox {
+      background-color: #007BFF;
       color: #fff;
       padding: 10px;
       border-radius: 5px;
+      display: block;
       margin-bottom: 20px;
+      text-align: center;
+    }
+    .warning {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ffcc00;
+      color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 1000;
     }
     #printButton {
-      background-color: #4caf50;
+      background-color: #007BFF;
       color: #fff;
       padding: 10px 15px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
+      transition: background-color 0.3s;
     }
-    #qualityBox {
-      background-color: #4caf50;
-      color: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      display: block;
-      margin-bottom: 20px;
-    }
-    .warning {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background-color: #ffcc00;
-      color: #333;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      display: none;
+    #printButton:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -125,37 +132,41 @@
 
   <div class="sections">
     <div class="section1">
-      <div id="inputValuesBox" style="background-color: #4caf50; color: #fff; padding: 10px; border-radius: 5px; margin-bottom: 20px;">Input Values:</div>
+      <h3 id="inputValuesBox" style="background-color: #007BFF; color: #fff; padding: 10px; border-radius: 5px; margin-bottom: 20px;">Input Values:</h3>
       <form id="costCalculatorForm">
-        <label for="width">Width:</label>
-        <input type="number" id="width" name="width" required><br>
+        <label for="width">Width (in inches):</label>
+        <input type="number" id="width" name="width" min="0" step="0.01" required>
 
         <label for="epi">EPI:</label>
-        <input type="number" id="epi" name="epi" required><br>
+        <input type="number" id="epi" name="epi" min="0" step="0.01" required>
 
         <label for="ppi">PPI:</label>
-        <input type="number" id="ppi" name="ppi" required><br>
+        <input type="number" id="ppi" name="ppi" min="0" step="0.01" required>
 
         <label for="warpCount">Warp Count:</label>
-        <input type="number" id="warpCount" name="warpCount" required><br>
+        <input type="number" id="warpCount" name="warpCount" min="0" step="0.01" required>
 
         <label for="weftCount">Weft Count:</label>
-        <input type="number" id="weftCount" name="weftCount" required><br>
+        <input type="number" id="weftCount" name="weftCount" min="0" step="0.01" required>
 
-        <label for="reedSpace">Reed Space:</label>
-        <input type="number" id="reedSpace" name="reedSpace" required><br>
+        <label for="reedSpace">Specify Reed Space:</label>
+        <input type="checkbox" id="specifyReedSpace" name="specifyReedSpace">
+        <input type="number" id="reedSpace" name="reedSpace" min="0" step="0.01" disabled required>
+
+        <label for="sizingWeightGain">Sizing Weight Gain % in Warp:</label>
+        <input type="number" id="sizingWeightGain" name="sizingWeightGain" min="0" step="0.01" required>
 
         <label for="warpYarnCost">Warp Yarn Cost per kg (in Rs):</label>
-        <input type="number" id="warpYarnCost" name="warpYarnCost" step="0.01" required><br>
+        <input type="number" id="warpYarnCost" name="warpYarnCost" min="0" step="0.01" required>
 
         <label for="weftYarnCost">Weft Yarn Cost per kg (in Rs):</label>
-        <input type="number" id="weftYarnCost" name="weftYarnCost" step="0.01" required><br>
+        <input type="number" id="weftYarnCost" name="weftYarnCost" min="0" step="0.01" required>
 
         <label for="sizingCosting">Sizing Cost per kg (in Rs):</label>
-        <input type="number" id="sizingCosting" name="sizingCosting" step="0.01" required><br>
+        <input type="number" id="sizingCosting" name="sizingCosting" min="0" step="0.01" required>
 
         <label for="jobRate">Job Rate (in Rs):</label>
-        <input type="number" id="jobRate" name="jobRate" step="0.01" required><br>
+        <input type="number" id="jobRate" name="jobRate" min="0" step="0.01" required>
 
         <button type="button" onclick="calculateCost()">Calculate Cost</button>
       </form>
@@ -216,8 +227,36 @@
         </tbody>
       </table>
 
-      <h3>Fabric Weight per Meter (in grams)</h3>
+      <h3>Total Cost Including 5% GST</h3>
       <table id="table3">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Total Cost (with GST)</td>
+            <td id="totalCostWithGST"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Cost with Margin</h3>
+      <table id="table4">
+        <thead>
+          <tr>
+            <th>Margin %</th>
+            <th>Cost (with Margin)</th>
+          </tr>
+        </thead>
+        <tbody id="marginTableBody">
+        </tbody>
+      </table>
+
+      <h3>Fabric Weight per Meter (in grams)</h3>
+      <table id="table5">
         <thead>
           <tr>
             <th>Parameter</th>
@@ -247,71 +286,82 @@
   <div class="warning" id="warningMessage"></div>
 
   <script>
-    function calculateCost() {
-      // Retrieve input values
-      const width = document.getElementById('width').value;
-      const epi = document.getElementById('epi').value;
-      const ppi = document.getElementById('ppi').value;
-      const warpCount = document.getElementById('warpCount').value;
-      const weftCount = document.getElementById('weftCount').value;
-      const reedSpace = document.getElementById('reedSpace').value;
-      const warpYarnCost = document.getElementById('warpYarnCost').value;
-      const weftYarnCost = document.getElementById('weftYarnCost').value;
-      const sizingCosting = document.getElementById('sizingCosting').value;
-      const jobRate = document.getElementById('jobRate').value;
+    document.getElementById('specifyReedSpace').addEventListener('change', function () {
+      document.getElementById('reedSpace').disabled = !this.checked;
+    });
 
-      // Display warning messages
-      if (width === '' || epi === '' || ppi === '' || warpCount === '' || weftCount === '' || reedSpace === '' || warpYarnCost === '' || weftYarnCost === '' || jobRate === '' || sizingCosting === '') {
+    function calculateCost() {
+      const width = parseFloat(document.getElementById('width').value);
+      const epi = parseFloat(document.getElementById('epi').value);
+      const ppi = parseFloat(document.getElementById('ppi').value);
+      const warpCount = parseFloat(document.getElementById('warpCount').value);
+      const weftCount = parseFloat(document.getElementById('weftCount').value);
+      const specifyReedSpace = document.getElementById('specifyReedSpace').checked;
+      let reedSpace = parseFloat(document.getElementById('reedSpace').value);
+      const sizingWeightGain = parseFloat(document.getElementById('sizingWeightGain').value);
+      const warpYarnCost = parseFloat(document.getElementById('warpYarnCost').value);
+      const weftYarnCost = parseFloat(document.getElementById('weftYarnCost').value);
+      const sizingCosting = parseFloat(document.getElementById('sizingCosting').value);
+      const jobRate = parseFloat(document.getElementById('jobRate').value);
+
+      if (isNaN(width) || isNaN(epi) || isNaN(ppi) || isNaN(warpCount) || isNaN(weftCount) || (specifyReedSpace && isNaN(reedSpace)) || isNaN(sizingWeightGain) || isNaN(warpYarnCost) || isNaN(weftYarnCost) || isNaN(sizingCosting) || isNaN(jobRate)) {
         showWarning('All input values are required.');
         return;
       }
 
-      if (parseFloat(reedSpace) < parseFloat(width)) {
-        showWarning('Reed Space should be equal or greater than Width.');
-        return;
+      if (!specifyReedSpace) {
+        reedSpace = (width * epi) / (epi - 4);
+        document.getElementById('reedSpace').value = reedSpace.toFixed(2);
       }
 
-      // Calculate Quality
       const quality = `${width}" ${epi}X${ppi}/ ${warpCount}X${weftCount}`;
       document.getElementById('qualityValue').innerText = quality;
 
-      // Calculate Warp Weight per Meter
-      const warpWeight = ((reedSpace * epi) / (1693.33 * warpCount)) * 1.05;
+      const warpWeight = (((reedSpace * epi) / (1693.33 * warpCount)) * 1.05) * (1 + (sizingWeightGain / 100));
       document.getElementById('warpWeight').innerText = warpWeight.toFixed(3);
 
-      // Calculate Weft Weight per Meter
       const weftWeight = ((reedSpace * ppi) / (1693.33 * weftCount)) * 1.05;
       document.getElementById('weftWeight').innerText = weftWeight.toFixed(3);
 
-      // Calculate Warp Cost per Meter
       const warpCost = warpWeight * warpYarnCost;
       document.getElementById('warpCost').innerText = warpCost.toFixed(2);
 
-      // Calculate Weft Cost per Meter
       const weftCost = weftWeight * weftYarnCost;
       document.getElementById('weftCost').innerText = weftCost.toFixed(2);
 
-      // Calculate Sizing Cost for Warp per Meter
       const sizingCost = warpWeight * sizingCosting;
       document.getElementById('sizingCost').innerText = sizingCost.toFixed(2);
 
-      // Calculate Weaving Cost per Meter
       const weavingCost = jobRate * ppi;
       document.getElementById('weavingCost').innerText = weavingCost.toFixed(2);
 
-      // Calculate Total Cost
       const totalCost = warpCost + weftCost + sizingCost + weavingCost;
       document.getElementById('totalCost').innerText = totalCost.toFixed(2);
 
-      // Calculate Fabric Weight per Meter in grams
+      const totalCostWithGST = totalCost * 1.05;
+      document.getElementById('totalCostWithGST').innerText = totalCostWithGST.toFixed(2);
+
       const warpWeightGrams = warpWeight * 1000;
       document.getElementById('warpWeightGrams').innerText = warpWeightGrams.toFixed(3);
 
       const weftWeightGrams = weftWeight * 1000;
       document.getElementById('weftWeightGrams').innerText = weftWeightGrams.toFixed(3);
 
-      const totalFabricWeight = (warpWeightGrams + weftWeightGrams).toFixed(3);
-      document.getElementById('totalFabricWeight').innerText = totalFabricWeight;
+      const totalFabricWeight = warpWeightGrams + weftWeightGrams;
+      document.getElementById('totalFabricWeight').innerText = totalFabricWeight.toFixed(3);
+
+      const marginTableBody = document.getElementById('marginTableBody');
+      marginTableBody.innerHTML = '';
+      for (let margin = 1; margin <= 15; margin++) {
+        const row = document.createElement('tr');
+        const cellMargin = document.createElement('td');
+        cellMargin.innerText = `${margin}%`;
+        const cellCost = document.createElement('td');
+        cellCost.innerText = (totalCostWithGST * (1 + margin / 100)).toFixed(2);
+        row.appendChild(cellMargin);
+        row.appendChild(cellCost);
+        marginTableBody.appendChild(row);
+      }
     }
 
     function showWarning(message) {
